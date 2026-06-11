@@ -1,83 +1,164 @@
-# Claude AI — Technical Guide for Development Teams
+# Claude AI — Best Practices for Development Teams
 
-**Version:** 1.1 | **Date:** June 2026 | **Audience:** Developers & Team Leads | **Classification:** Internal Use Only
+**Version:** 2.0 | **Date:** June 2026 | **Classification:** Internal Use Only  
+**Owner:** Lead DevOps & AI Ethics Officer | **Review Cycle:** Quarterly
 
-This guide is organized into modular, stack-specific sections for Adobe Commerce (Magento), MERN Stack, and Shopify Development.
-
-## 📚 Documentation Structure
-
-```
-/docs
-  ├── 00-core-principles/         ← Token economics, model selection
-  ├── 01-token-optimization/      ← Caching, batch API, output constraints
-  ├── 02-prompt-engineering/      ← XML templates, best practices
-  ├── stacks/
-  │   ├── magento/               ← Magento-specific workflows
-  │   ├── mern/                  ← MERN stack workflows
-  │   └── shopify/               ← Shopify development workflows
-  ├── governance/                 ← Team standards, checklists
-  └── reference/                  ← Quick refs, links, commands
-```
-
-## 🚀 Quick Start
-
-1. **New to Claude?** → Read [`00-core-principles/economics.md`](./docs/00-core-principles/economics.md)
-2. **Building a Magento feature?** → Start with [`stacks/magento/README.md`](./docs/stacks/magento/README.md)
-3. **Working on MERN?** → Check [`stacks/mern/README.md`](./docs/stacks/mern/README.md)
-4. **Shopify development?** → See [`stacks/shopify/README.md`](./docs/stacks/shopify/README.md)
-5. **Setting up Claude Code?** → Read [`reference/claude-code-setup.md`](./docs/reference/claude-code-setup.md)
-
-## 📋 Table of Contents
-
-- [Core Principles](./docs/00-core-principles/)
-  - [Token Economics](./docs/00-core-principles/economics.md)
-  - [Model Selection Strategy](./docs/00-core-principles/model-selection.md)
-
-- [Token Optimization](./docs/01-token-optimization/)
-  - [Prompt Caching Fundamentals](./docs/01-token-optimization/caching.md)
-  - [Output Constraints](./docs/01-token-optimization/output-constraints.md)
-  - [Batch API Guide](./docs/01-token-optimization/batch-api.md)
-  - [Context Window Management](./docs/01-token-optimization/context-management.md)
-
-- [Prompt Engineering](./docs/02-prompt-engineering/)
-  - [Standard Prompt Template](./docs/02-prompt-engineering/template.md)
-  - [XML Tag Reference](./docs/02-prompt-engineering/xml-tags.md)
-  - [Multi-Shot Examples](./docs/02-prompt-engineering/examples.md)
-
-- [Stack-Specific Workflows](./docs/stacks/)
-  - [Magento/Adobe Commerce](./docs/stacks/magento/README.md)
-  - [MERN Stack](./docs/stacks/mern/README.md)
-  - [Shopify Development](./docs/stacks/shopify/README.md)
-
-- [Governance & Standards](./docs/governance/)
-  - [Team Standards](./docs/governance/standards.md)
-  - [Code Review Checklist](./docs/governance/code-review-checklist.md)
-  - [Prompt Library Structure](./docs/governance/prompt-library.md)
-  - [Monthly Cost Review](./docs/governance/cost-review.md)
-
-- [Quick Reference](./docs/reference/)
-  - [Cheat Sheet](./docs/reference/cheat-sheet.md)
-  - [Claude Code Commands](./docs/reference/claude-code-commands.md)
-  - [Model Pricing & Selection](./docs/reference/pricing.md)
-  - [Helpful Links](./docs/reference/links.md)
-
-## 🎯 Core Takeaways
-
-| Principle | Action |
-|---|---|
-| **Output tokens cost 5× more than input** | Always constrain output with `max_tokens` |
-| **Cache everything reusable** | System prompts, static context, coding standards |
-| **Match model to task** | Don't use Opus for tasks Haiku can handle |
-| **One task per session** | Start fresh chat for each distinct problem |
-| **Use structured XML prompts** | Enables consistent, parseable outputs |
-
-## 📞 Support & Maintenance
-
-- **Questions?** Check the relevant stack guide first
-- **Found an issue?** Create a GitHub issue with the label `claude-guide`
-- **Have a better practice?** Submit a PR with improvements
-- **Monthly reviews:** First Friday of each month at 10 AM
+> Practical guide for using Claude AI effectively across Adobe Commerce (Magento), MERN Stack, and Shopify development.
 
 ---
 
-*Maintained by: Lead DevOps Engineer | Review cycle: Quarterly | Last updated: June 2026*
+## Start Here — Choose Your Path
+
+| I am… | Start with… |
+|---|---|
+| **New to this team / first day** | [New Developer Onboarding →](./docs/04-onboarding/new-developer.md) |
+| **A developer needing a quick answer** | [Quick Reference Cheat Sheet →](./docs/reference/cheat-sheet.md) |
+| **Working on Magento** | [Magento Workflow & Prompt Templates →](./docs/stacks/magento.md) |
+| **Working on MERN** | [MERN Workflow & Prompt Templates →](./docs/stacks/mern.md) |
+| **Working on Shopify** | [Shopify Workflow & Prompt Templates →](./docs/stacks/shopify.md) |
+| **Setting up Claude for a new project** | [Projects & CLAUDE.md Setup →](./docs/01-prompt-efficiency/context-persistence.md) |
+| **Setting up Claude Code for Magento** | [Magento — Full Project Setup →](./docs/stacks/magento.md#claude-code-project-setup) |
+| **Setting up Claude Code for MERN** | [MERN — Full Project Setup →](./docs/stacks/mern.md#claude-code-project-setup) |
+| **Setting up Claude Code for Shopify** | [Shopify — Full Project Setup →](./docs/stacks/shopify.md#claude-code-project-setup) |
+| **Writing better prompts** | [Prompt Engineering Standards →](./docs/00-core-principles/prompt-engineering.md) |
+| **Handling an AI incident right now** | [Incident Response Playbook →](./docs/02-ai-ethics/incident-response.md) |
+
+---
+
+## What We Use
+
+**Claude Teams** — a subscription product from Anthropic. Login: [claude.ai](https://claude.ai) with your company email.
+
+| Tool | Purpose |
+|---|---|
+| **Claude Web** | Chat at claude.ai — general tasks, Projects, collaboration |
+| **Claude Desktop** | Native Mac/Windows app — same as Web, better OS integration |
+| **Claude Code** | CLI + IDE extension (VS Code, JetBrains) — in-project development sessions |
+
+No API keys. No per-token billing. All three tools use the same Teams account login.
+
+---
+
+## Documentation Structure
+
+```
+/docs
+├── 00-core-principles/          Core rules and strategy
+│   ├── subscription.md          Teams license, model tiers, usage limits
+│   ├── model-selection.md       When to use Haiku / Sonnet / Opus
+│   └── prompt-engineering.md    Prompt templates, XML structure, examples
+│
+├── 01-prompt-efficiency/        Prompt quality and context techniques
+│   ├── context-persistence.md   Projects & CLAUDE.md — set context once, reuse always
+│   ├── output-constraints.md    Prompting for concise, structured output
+│   └── bulk-work.md             Bulk work strategies (one session per item)
+│
+├── 02-ai-ethics/                AI Ethics Officer's section
+│   ├── policy.md                Acceptable use policy
+│   ├── data-handling.md         What data is safe to send to Claude
+│   ├── bias-and-fairness.md     Output review, human-in-the-loop checkpoints
+│   ├── transparency.md          PR disclosure, client disclosure rules
+│   └── incident-response.md     Playbook for AI incidents
+│
+├── 03-security/                 Security for Claude Teams usage
+│   ├── account-management.md    Account & access management (login, 2FA, offboarding)
+│   ├── data-classification.md   Tier 0–3 data classification
+│   ├── activity-monitoring.md   Activity monitoring and accountability
+│   └── threat-model.md          LLM-specific threats and mitigations
+│
+├── 04-onboarding/               Developer enablement
+│   ├── new-developer.md         30-minute getting-started guide
+│   ├── training-plan.md         10-day self-paced training programme
+│   └── faq.md                   Common questions answered
+│
+├── stacks/                      Stack-specific developer guides
+│   ├── magento.md               System prompt, task patterns, CLAUDE.md for Magento
+│   ├── mern.md                  System prompt, task patterns, CLAUDE.md for MERN
+│   └── shopify.md               System prompt, task patterns, CLAUDE.md for Shopify
+│
+├── governance/                  Team standards
+│   └── standards.md             Developer standards, prompt library, review checklist
+│
+└── reference/                   Quick lookup
+    ├── cheat-sheet.md           One-page quick reference card
+    └── claude-code-commands.md  Slash commands, piping, CLAUDE.md guide
+```
+
+---
+
+## Core Principles
+
+| Principle | Rule |
+|---|---|
+| **Match model to complexity** | Haiku → simple, Sonnet → standard, Opus → complex (use selectively) |
+| **One task per conversation** | Use `/clear` between distinct problems |
+| **Set context once** | Use Projects (Web/Desktop) or `CLAUDE.md` (Claude Code) |
+| **Constrain your output** | Specify exact format, scope, and length in every prompt |
+| **Never send sensitive data** | PII, passwords, credentials, customer data → never to Claude |
+| **Disclose AI use in PRs** | Every AI-assisted PR must have an AI Assistance section |
+| **Human is always accountable** | Review, test, and validate all Claude output before use |
+
+---
+
+## Data Safety — Quick Reference
+
+```
+SEND:    Your own code, anonymised logs, scrubbed errors, generic schemas
+
+SCRUB:   Production logs (remove emails/IPs/IDs), client code (get approval)
+
+NEVER:   Customer PII · passwords · credentials · .env files · payment data
+```
+
+---
+
+## PR Disclosure — Required
+
+```markdown
+## AI Assistance
+- Tool used: Claude Sonnet 4.6 via Claude Code
+- Scope: [What Claude helped with]
+- Human review: Confirmed — reviewed, tested locally, validated
+```
+
+---
+
+## Governance Calendar
+
+| Event | Frequency | Owner |
+|---|---|---|
+| Monthly AI Governance Review | First Friday of each month | AI Ethics Officer |
+| Account access review | Monthly | AI Ethics Officer |
+| Threat model + policy review | Quarterly | AI Ethics Officer |
+| Prompt library audit | Quarterly | Tech Leads |
+
+---
+
+## Support & Contacts
+
+| Need | Channel |
+|---|---|
+| Policy or safety question | Slack: **#ai-governance** |
+| Technical question about Claude | Slack: **#dev-tools** |
+| Incident — sensitive data sent to Claude | AI Ethics Officer directly (urgent) |
+| Propose a new AI use case | GitHub Issue: `ai-use-case-proposal` |
+| Report biased/harmful AI output | GitHub Issue: `ai-bias-report` |
+
+---
+
+## Key Links
+
+| Resource | URL |
+|---|---|
+| Claude Web (login) | https://claude.ai |
+| Claude Desktop download | https://claude.ai/download |
+| Claude Code documentation | https://docs.anthropic.com/en/docs/claude-code/overview |
+| Prompt Engineering Guide | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview |
+| Anthropic Status Page | https://status.anthropic.com |
+| Magento Developer Docs | https://developer.adobe.com/commerce/docs/ |
+| Shopify Developer Docs | https://shopify.dev/docs |
+
+---
+
+*Maintained by: Lead DevOps & AI Ethics Officer | Review cycle: Quarterly*  
+*Questions: Slack #ai-governance*
